@@ -1,7 +1,7 @@
 'use client'
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, MessageSquare, BarChart, Settings, LogOut } from "lucide-react";
+import { Home, MessageSquare, BarChart, Settings, LogOut, Database } from "lucide-react";
 import { Sidebar, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarHeader, SidebarFooter, SidebarContent } from "@/components/ui/sidebar";
 import { Logo } from "./logo";
 import { useAuth } from "@/hooks/use-auth";
@@ -10,6 +10,7 @@ const menuItems = [
     { href: "/dashboard", label: "Dashboard", icon: Home },
     { href: "/chat", label: "AI Chat", icon: MessageSquare },
     { href: "/simulations", label: "Simulations", icon: BarChart },
+    { href: "/data", label: "Manage Data", icon: Database },
 ];
 
 export default function AppSidebar() {
@@ -27,7 +28,7 @@ export default function AppSidebar() {
                         <SidebarMenuItem key={item.href}>
                             <SidebarMenuButton
                                 asChild
-                                isActive={pathname === item.href}
+                                isActive={pathname.startsWith(item.href)}
                                 tooltip={item.label}
                             >
                                 <Link href={item.href}>

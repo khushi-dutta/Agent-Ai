@@ -4,6 +4,7 @@ import type { PropsWithChildren } from "react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { AuthProvider, useAuth } from "@/hooks/use-auth";
+import { FinancialDataProvider } from "@/hooks/use-financial-data";
 import AppSidebar from "@/components/app-sidebar";
 import Header from "@/components/header";
 import { SidebarProvider } from "@/components/ui/sidebar";
@@ -39,15 +40,17 @@ function AuthenticatedLayout({ children }: PropsWithChildren) {
   }
   
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <div className="flex flex-col flex-1 min-h-screen">
-        <Header />
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 bg-secondary">
-          {children}
-        </main>
-      </div>
-    </SidebarProvider>
+    <FinancialDataProvider>
+      <SidebarProvider>
+        <AppSidebar />
+        <div className="flex flex-col flex-1 min-h-screen">
+          <Header />
+          <main className="flex-1 p-4 sm:p-6 lg:p-8 bg-secondary">
+            {children}
+          </main>
+        </div>
+      </SidebarProvider>
+    </FinancialDataProvider>
   );
 }
 

@@ -87,8 +87,3 @@ export const financialData = {
 };
 
 export type FinancialData = typeof financialData;
-
-export const getFinancialData = async (): Promise<FinancialData> => {
-    // In a real app, this would be a secure API call to Fi MCP Server
-    return new Promise(resolve => setTimeout(() => resolve(financialData), 500));
-}

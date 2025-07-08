@@ -1,13 +1,36 @@
-import { getFinancialData } from "@/lib/mcp-data";
+'use client'; 
+
+import { useFinancialData } from "@/hooks/use-financial-data";
 import StatCard from "@/components/dashboard/stat-card";
 import NetWorthChart from "@/components/dashboard/net-worth-chart";
 import { DollarSign, Wallet, Landmark, AlertTriangle, ShieldCheck } from "lucide-react";
 import IncomeExpenseChart from "@/components/dashboard/income-expense-chart";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useAuth } from "@/hooks/use-auth";
 
-export default async function DashboardPage() {
-    const data = await getFinancialData();
+export default function DashboardPage() {
+    const { financialData: data, loading } = useFinancialData();
+    const { user } = useAuth();
+
+    if (loading || !data) {
+        return (
+            <div className="space-y-6">
+                <Skeleton className="h-10 w-1/2" />
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                    <Skeleton className="h-28" />
+                    <Skeleton className="h-28" />
+                    <Skeleton className="h-28" />
+                    <Skeleton className="h-28" />
+                </div>
+                <div className="grid gap-4 lg:grid-cols-5">
+                    <div className="lg:col-span-3"><Skeleton className="h-80" /></div>
+                    <div className="lg:col-span-2"><Skeleton className="h-80" /></div>
+                </div>
+            </div>
+        )
+    }
     
     const totalAssets = data.accounts.reduce((sum, acc) => sum + acc.balance, 0) + 
                         data.investments.stocks.reduce((sum, stock) => sum + stock.currentValue, 0) +
@@ -20,16 +43,18 @@ export default async function DashboardPage() {
 
     const netWorth = totalAssets - totalLiabilities;
     const monthlyExpenses = data.expenses.monthly.reduce((sum, exp) => sum + exp.amount, 0);
+    const welcomeName = user?.displayName?.split(' ')[0] || data.user.name.split(' ')[0];
+    const lastCreditScore = data.creditScore.history.length > 1 ? data.creditScore.history[data.creditScore.history.length - 2].score : data.creditScore.current;
 
     return (
         <div className="space-y-6">
-            <h1 className="text-3xl font-headline font-bold">Welcome back, {data.user.name.split(' ')[0]}!</h1>
+            <h1 className="text-3xl font-headline font-bold">Welcome back, {welcomeName}!</h1>
             
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <StatCard title="Net Worth" value={`₹${netWorth.toLocaleString()}`} icon={Wallet} />
                 <StatCard title="Total Assets" value={`₹${totalAssets.toLocaleString()}`} icon={Landmark} />
                 <StatCard title="Monthly Expenses" value={`₹${monthlyExpenses.toLocaleString()}`} icon={DollarSign} />
-                <StatCard title="Credit Score" value={data.creditScore.current.toString()} icon={ShieldCheck} description="Up from 765"/>
+                <StatCard title="Credit Score" value={data.creditScore.current.toString()} icon={ShieldCheck} description={`Up from ${lastCreditScore}`}/>
             </div>
 
             <div className="grid gap-4 lg:grid-cols-5">

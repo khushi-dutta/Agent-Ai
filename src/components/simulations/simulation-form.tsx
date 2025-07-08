@@ -5,9 +5,8 @@ import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { financialData } from '@/lib/mcp-data';
+import type { FinancialData } from '@/lib/mcp-data';
 import type { ProjectFinancialOutcomesInput } from '@/ai/flows/project-financial-outcomes';
 import { Loader2 } from 'lucide-react';
 import { Textarea } from '../ui/textarea';
@@ -25,9 +24,10 @@ const formSchema = z.object({
 interface SimulationFormProps {
     onSubmit: (data: ProjectFinancialOutcomesInput) => void;
     isLoading: boolean;
+    financialData: FinancialData;
 }
 
-export default function SimulationForm({ onSubmit, isLoading }: SimulationFormProps) {
+export default function SimulationForm({ onSubmit, isLoading, financialData }: SimulationFormProps) {
     const totalSavings = financialData.accounts.reduce((sum, acc) => sum + acc.balance, 0) + 
                          financialData.investments.stocks.reduce((sum, stock) => sum + stock.currentValue, 0) +
                          financialData.investments.mutualFunds.reduce((sum, mf) => sum + mf.currentValue, 0) +

@@ -6,11 +6,13 @@ import SimulationResults from '@/components/simulations/simulation-results';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Bot } from 'lucide-react';
+import { useFinancialData } from '@/hooks/use-financial-data';
 
 export default function SimulationsPage() {
     const [results, setResults] = useState<ProjectFinancialOutcomesOutput | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const { financialData, loading: dataLoading } = useFinancialData();
 
     const handleSimulation = async (data: ProjectFinancialOutcomesInput) => {
         setIsLoading(true);
@@ -26,13 +28,30 @@ export default function SimulationsPage() {
             setIsLoading(false);
         }
     };
+    
+    const isLoadingPage = dataLoading || !financialData;
 
     return (
         <div className="space-y-6">
             <h1 className="text-3xl font-headline font-bold">Financial Projections</h1>
             <div className="grid lg:grid-cols-3 gap-8 items-start">
                 <div className="lg:col-span-1">
-                     <SimulationForm onSubmit={handleSimulation} isLoading={isLoading} />
+                    {isLoadingPage ? (
+                        <Card>
+                            <CardHeader>
+                                <Skeleton className="h-8 w-1/2 mb-2"/>
+                                <Skeleton className="h-5 w-full"/>
+                            </CardHeader>
+                            <CardContent className="space-y-4">
+                                <Skeleton className="h-10 w-full" />
+                                <Skeleton className="h-10 w-full" />
+                                <Skeleton className="h-10 w-full" />
+                                <Skeleton className="h-10 w-full" />
+                            </CardContent>
+                        </Card>
+                    ) : (
+                     <SimulationForm financialData={financialData} onSubmit={handleSimulation} isLoading={isLoading} />
+                    )}
                 </div>
                 <div className="lg:col-span-2">
                     {isLoading && (
