@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
-import { ShieldCheck, Eye, Bell, User, Download, Trash2, FileJson } from "lucide-react";
+import { ShieldCheck, Eye, Bell, User, Download, Trash2, FileText } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { useFinancialData } from "@/hooks/use-financial-data";
 import { useAuth } from "@/hooks/use-auth";
@@ -27,24 +27,147 @@ export default function SettingsPage() {
     const { toast } = useToast();
 
     const handleExportData = () => {
-        try {
-            const jsonString = `data:text/json;charset=utf-8,${encodeURIComponent(
-                JSON.stringify(financialData, null, 2)
-            )}`;
-            const link = document.createElement("a");
-            link.href = jsonString;
-            link.download = "fingenie_data.json";
-
-            link.click();
-            toast({
-                title: "Data Exported",
-                description: "Your financial data has been downloaded.",
-            });
-        } catch (error) {
+        if (!financialData) {
             toast({
                 variant: "destructive",
                 title: "Export Failed",
-                description: "Could not export your data. Please try again.",
+                description: "No data available to export.",
+            });
+            return;
+        }
+
+        try {
+            const toCsvRow = (arr: (string | number | undefined | null)[]) => 
+                arr.map(val => `"${String(val === undefined || val === null ? '' : val).replace(/"/g, '""')}"`).join(',');
+
+            let csvContent = `FinGenie Data Export for ${financialData.user.name}\n\n`;
+
+            // User Details
+            csvContent += "--- USER DETAILS ---\n";
+            csvContent += `Name,${financialData.user.name}\n`;
+            csvContent += `Email,${financialData.user.email}\n`;
+            csvContent += `Age,${financialData.user.age}\n\n`;
+
+            // Accounts
+            if (financialData.accounts.length > 0) {
+                csvContent += "--- BANK ACCOUNTS ---\n";
+                const headers = ["Type", "Bank", "Balance", "Currency", "Maturity Date"];
+                csvContent += toCsvRow(headers) + '\n';
+                financialData.accounts.forEach(item => {
+                    csvContent += toCsvRow([item.type, item.bank, item.balance, item.currency, item.maturityDate]) + '\n';
+                });
+                csvContent += '\n';
+            }
+
+            // Investments Section
+            csvContent += "--- INVESTMENTS ---\n\n";
+
+            // Stocks
+            if (financialData.investments.stocks.length > 0) {
+                csvContent += "Stocks\n";
+                const headers = ["Symbol", "Quantity", "Avg Price", "Current Value"];
+                csvContent += toCsvRow(headers) + '\n';
+                financialData.investments.stocks.forEach(item => {
+                    csvContent += toCsvRow([item.symbol, item.quantity, item.avgPrice, item.currentValue]) + '\n';
+                });
+                csvContent += '\n';
+            }
+            
+            // Mutual Funds
+            if (financialData.investments.mutualFunds.length > 0) {
+                csvContent += "Mutual Funds\n";
+                const headers = ["Fund Name", "Invested", "Current Value"];
+                csvContent += toCsvRow(headers) + '\n';
+                financialData.investments.mutualFunds.forEach(item => {
+                    csvContent += toCsvRow([item.name, item.invested, item.currentValue]) + '\n';
+                });
+                csvContent += '\n';
+            }
+
+            // EPF
+            csvContent += "EPF\n";
+            csvContent += `Balance,${financialData.investments.epf.balance}\n\n`;
+
+            // Liabilities Section
+            csvContent += "--- LIABILITIES ---\n\n";
+            
+            // Loans
+            if (financialData.liabilities.loans.length > 0) {
+                csvContent += "Loans\n";
+                const headers = ["Type", "Balance", "Interest Rate (%)", "Tenure (Months)"];
+                csvContent += toCsvRow(headers) + '\n';
+                financialData.liabilities.loans.forEach(item => {
+                    csvContent += toCsvRow([item.type, item.balance, item.interestRate, item.tenureMonths]) + '\n';
+                });
+                csvContent += '\n';
+            }
+
+            // Credit Cards
+            if (financialData.liabilities.creditCards.length > 0) {
+                csvContent += "Credit Cards\n";
+                const headers = ["Card Name", "Outstanding", "Limit"];
+                csvContent += toCsvRow(headers) + '\n';
+                financialData.liabilities.creditCards.forEach(item => {
+                    csvContent += toCsvRow([item.name, item.outstanding, item.limit]) + '\n';
+                });
+                csvContent += '\n';
+            }
+
+            // Income
+            if (financialData.income.length > 0) {
+                csvContent += "--- INCOME SOURCES ---\n";
+                const headers = ["Source", "Amount", "Frequency"];
+                csvContent += toCsvRow(headers) + '\n';
+                financialData.income.forEach(item => {
+                    csvContent += toCsvRow([item.source, item.amount, item.frequency]) + '\n';
+                });
+                csvContent += '\n';
+            }
+
+            // Expenses
+            if (financialData.expenses.monthly.length > 0) {
+                csvContent += "--- MONTHLY EXPENSES ---\n";
+                const headers = ["Category", "Amount"];
+                csvContent += toCsvRow(headers) + '\n';
+                financialData.expenses.monthly.forEach(item => {
+                    csvContent += toCsvRow([item.category, item.amount]) + '\n';
+                });
+                csvContent += '\n';
+            }
+
+            // Insurance
+            csvContent += "--- INSURANCE ---\n\n";
+            csvContent += "Life Insurance\n";
+            csvContent += `Policy,${financialData.insurance.life.policy}\n`;
+            csvContent += `Sum Assured,${financialData.insurance.life.sumAssured}\n`;
+            csvContent += `Premium,${financialData.insurance.life.premium} ${financialData.insurance.life.premiumFrequency}\n`;
+            csvContent += `Surrender Value,${financialData.insurance.life.surrenderValue}\n\n`;
+
+            csvContent += "Health Insurance\n";
+            csvContent += `Policy,${financialData.insurance.health.policy}\n`;
+            csvContent += `Coverage,${financialData.insurance.health.coverage}\n`;
+            csvContent += `Premium,${financialData.insurance.health.premium} ${financialData.insurance.health.premiumFrequency}\n\n`;
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8,' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", "fingenie_data.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            toast({
+                title: "Data Exported",
+                description: "Your financial data has been downloaded as a CSV file.",
+            });
+        } catch (error) {
+            console.error("CSV Export Error:", error);
+            toast({
+                variant: "destructive",
+                title: "Export Failed",
+                description: "Could not export your data as CSV. Please try again.",
             });
         }
     };
@@ -130,7 +253,7 @@ export default function SettingsPage() {
             <Card>
                 <CardHeader>
                     <div className="flex items-center gap-2">
-                        <FileJson className="h-6 w-6 text-primary" />
+                        <FileText className="h-6 w-6 text-primary" />
                         <CardTitle className="font-headline text-2xl">Data Export & Management</CardTitle>
                     </div>
                     <CardDescription>Export or delete your account data.</CardDescription>
@@ -139,7 +262,7 @@ export default function SettingsPage() {
                     <div className="flex items-center justify-between p-4 rounded-lg bg-secondary/50">
                         <div>
                             <h3 className="font-semibold">Export Your Data</h3>
-                            <p className="text-sm text-muted-foreground">Download all your financial data in JSON format.</p>
+                            <p className="text-sm text-muted-foreground">Download all your financial data in a readable CSV file.</p>
                         </div>
                         <Button onClick={handleExportData} className="bg-stat-income hover:bg-stat-income/90 text-primary-foreground">
                            <Download className="mr-2 h-4 w-4" /> Export Data
