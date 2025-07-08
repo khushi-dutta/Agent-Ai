@@ -1,10 +1,10 @@
 'use client'
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, MessageSquare, BarChart, Settings, LifeBuoy, LogOut } from "lucide-react";
+import { Home, MessageSquare, BarChart, Settings, LogOut } from "lucide-react";
 import { Sidebar, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarHeader, SidebarFooter, SidebarContent } from "@/components/ui/sidebar";
 import { Logo } from "./logo";
-import { Button } from "./ui/button";
+import { useAuth } from "@/hooks/use-auth";
 
 const menuItems = [
     { href: "/dashboard", label: "Dashboard", icon: Home },
@@ -14,6 +14,7 @@ const menuItems = [
 
 export default function AppSidebar() {
     const pathname = usePathname();
+    const { signOut } = useAuth();
 
     return (
         <Sidebar collapsible="icon" className="border-r bg-card" variant="sidebar">
@@ -49,11 +50,9 @@ export default function AppSidebar() {
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                      <SidebarMenuItem>
-                        <SidebarMenuButton asChild tooltip="Logout">
-                            <Link href="/login">
-                                <LogOut />
-                                <span>Logout</span>
-                            </Link>
+                        <SidebarMenuButton onClick={signOut} tooltip="Logout">
+                            <LogOut />
+                            <span>Logout</span>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>
