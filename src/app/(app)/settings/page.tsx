@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
-import { ShieldCheck, Eye, Bell, User, Download, Trash2, FileText } from "lucide-react";
+import { ShieldCheck, Eye, Bell, User, Download, Trash2, FileText, Plug } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { useFinancialData } from "@/hooks/use-financial-data";
 import { useAuth } from "@/hooks/use-auth";
@@ -20,6 +20,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 export default function SettingsPage() {
     const { financialData } = useFinancialData();
@@ -247,6 +248,48 @@ export default function SettingsPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                      <p className="text-muted-foreground text-sm">Profile editing options will be available here in a future update.</p>
+                </CardContent>
+            </Card>
+
+             <Card>
+                <CardHeader>
+                    <div className="flex items-center gap-2">
+                        <Plug className="h-6 w-6 text-primary" />
+                        <CardTitle className="font-headline text-2xl">Connected Services</CardTitle>
+                    </div>
+                    <CardDescription>Manage your connected accounts and data sources.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between p-4 rounded-lg bg-secondary/50">
+                        <div className="flex items-center gap-4">
+                            <Avatar className="h-10 w-10">
+                                <AvatarFallback className="bg-primary/10 text-primary font-semibold">Fi</AvatarFallback>
+                            </Avatar>
+                            <div>
+                                <h3 className="font-semibold">Fi Money</h3>
+                                <p className="text-sm text-muted-foreground">Connected via MCP</p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                           <div className="h-2 w-2 rounded-full bg-stat-growth"></div>
+                           <span className="text-sm font-medium text-stat-growth">Active</span>
+                        </div>
+                    </div>
+                    <div className="flex items-center justify-between p-4 rounded-lg bg-secondary/50">
+                         <div className="flex items-center gap-4">
+                             <Avatar className="h-10 w-10">
+                                <AvatarFallback className="bg-stat-growth/10 text-stat-growth font-semibold">G</AvatarFallback>
+                            </Avatar>
+                            <div>
+                                <h3 className="font-semibold">Google Account</h3>
+                                <p className="text-sm text-muted-foreground">Authentication</p>
+                            </div>
+                         </div>
+                        <div className="flex items-center gap-2">
+                            <div className="h-2 w-2 rounded-full bg-stat-growth"></div>
+                            <span className="text-sm font-medium text-stat-growth">Active</span>
+                        </div>
+                    </div>
                 </CardContent>
             </Card>
             
