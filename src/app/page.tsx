@@ -10,6 +10,7 @@ import Image from 'next/image';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
 import Autoplay from 'embla-carousel-autoplay'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import { ThemeToggle } from '@/components/theme-toggle';
 
 const TestimonialCard = ({ name, role, text, avatarSrc }: { name: string, role: string, text: string, avatarSrc: string }) => {
     return (
@@ -41,6 +42,7 @@ export default function LandingPage() {
       <header className="container mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between sticky top-0 bg-background/80 backdrop-blur-sm z-50">
         <Logo />
         <nav className="flex items-center gap-2 sm:gap-4">
+          <ThemeToggle />
           <Button variant="ghost" asChild>
             <Link href="/login">Sign In</Link>
           </Button>
