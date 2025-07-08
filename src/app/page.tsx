@@ -6,19 +6,21 @@ import Image from 'next/image';
 
 const TestimonialCard = ({ name, role, text, avatarSrc }: { name: string, role: string, text: string, avatarSrc: string }) => {
     return (
-        <div className="bg-card p-6 rounded-lg shadow-sm border h-full flex flex-col">
-            <div className="flex items-center mb-4">
+        <figure className="bg-card p-6 rounded-xl shadow-sm border h-full flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5">
+            <div className="flex mb-4">
+                {[...Array(5)].map((_, i) => <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />)}
+            </div>
+            <blockquote className="text-muted-foreground italic flex-grow">
+                <p>"{text}"</p>
+            </blockquote>
+            <figcaption className="flex items-center mt-6 pt-4 border-t">
                 <Image src={avatarSrc} alt={name} width={48} height={48} className="rounded-full mr-4" data-ai-hint="person portrait" />
                 <div>
                     <p className="font-semibold">{name}</p>
                     <p className="text-sm text-muted-foreground">{role}</p>
                 </div>
-            </div>
-            <div className="flex mb-4">
-                {[...Array(5)].map((_, i) => <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />)}
-            </div>
-            <p className="text-muted-foreground italic flex-grow">"{text}"</p>
-        </div>
+            </figcaption>
+        </figure>
     )
 }
 
