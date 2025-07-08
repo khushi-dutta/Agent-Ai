@@ -19,7 +19,7 @@ export default function AppSidebar() {
     const { signOut } = useAuth();
 
     return (
-        <Sidebar collapsible="icon" className="border-r bg-card" variant="sidebar">
+        <Sidebar collapsible="icon" className="border-r">
             <SidebarHeader className="p-4">
                 <Logo />
             </SidebarHeader>

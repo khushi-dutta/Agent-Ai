@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/hooks/use-auth";
+import { ThemeToggle } from "./theme-toggle";
 
 export default function Header() {
     const { user, signOut } = useAuth();
@@ -34,6 +35,7 @@ export default function Header() {
                 {/* Optional: Add page title here */}
             </div>
             <div className="flex items-center gap-4">
+                <ThemeToggle />
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="relative h-9 w-9 rounded-full">
