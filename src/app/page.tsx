@@ -1,3 +1,4 @@
+
 'use client'
 
 import * as React from 'react'
@@ -8,6 +9,7 @@ import { Bot, LineChart, ShieldCheck, Star, Facebook, Twitter, Linkedin } from '
 import Image from 'next/image';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
 import Autoplay from 'embla-carousel-autoplay'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 
 const TestimonialCard = ({ name, role, text, avatarSrc }: { name: string, role: string, text: string, avatarSrc: string }) => {
     return (
@@ -179,9 +181,49 @@ export default function LandingPage() {
                 </Carousel>
             </div>
         </section>
+
+        {/* FAQs Section */}
+        <section className="bg-secondary py-20">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-headline font-bold">Frequently Asked Questions</h2>
+              <p className="max-w-2xl mx-auto text-muted-foreground mt-4">
+                Have questions? We've got answers. If you don't see your question here, feel free to reach out.
+              </p>
+            </div>
+            <div className="max-w-3xl mx-auto">
+              <Accordion type="single" collapsible className="w-full space-y-2">
+                <AccordionItem value="item-1" className="bg-card border-b-0 rounded-lg px-6">
+                  <AccordionTrigger className="text-left hover:no-underline">Is my financial data secure with FinGenie?</AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground">
+                    Absolutely. Security is our top priority. We use bank-level encryption (AES-256) for all your data, both in transit and at rest. We never store your bank credentials and use secure, token-based connections via the Fi MCP Server.
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-2" className="bg-card border-b-0 rounded-lg px-6">
+                  <AccordionTrigger className="text-left hover:no-underline">How does the AI assistant work?</AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground">
+                    Our AI assistant is powered by Google's Gemini model. It's trained to understand natural language and analyze the financial data you provide within the app. It can answer questions, generate insights, and even run projections, but it never makes decisions or transactions on your behalf.
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-3" className="bg-card border-b-0 rounded-lg px-6">
+                  <AccordionTrigger className="text-left hover:no-underline">Is FinGenie free to use?</AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground">
+                    Yes, FinGenie offers a powerful free tier that includes access to the core features like the dashboard, AI chat, and goal tracking. We may introduce premium features in the future for advanced users.
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-4" className="bg-card border-b-0 rounded-lg px-6">
+                  <AccordionTrigger className="text-left hover:no-underline">Can I export my data?</AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground">
+                    Yes, you own your data. You can export all of your financial information as a CSV file anytime from the settings page. You can also permanently delete your account and all associated data from our servers.
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            </div>
+          </div>
+        </section>
         
         {/* CTA Section */}
-        <section className="bg-secondary">
+        <section className="bg-background">
              <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
                  <h2 className="text-3xl md:text-4xl font-headline font-bold mb-4">Ready to unlock your financial potential?</h2>
                  <p className="text-muted-foreground mb-8 max-w-xl mx-auto">Join thousands of users who are building a better financial future with FinGenie.</p>
@@ -194,7 +236,7 @@ export default function LandingPage() {
       </main>
       
       {/* Footer */}
-      <footer className="bg-background border-t">
+      <footer className="bg-secondary border-t">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                 <div className="col-span-2 md:col-span-1">
