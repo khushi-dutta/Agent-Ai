@@ -49,6 +49,19 @@ body {
     --stat-credit: 262 84% 60%;
     --stat-growth: 142 76% 36%;
     --stat-loss: 350 89% 60%;
+
+    --insight-warning-bg: 48 96% 94%;
+    --insight-warning-fg: 38 92% 50%;
+    --insight-warning-border: 45 96% 89%;
+    --insight-success-bg: 133 82% 95%;
+    --insight-success-fg: 142 76% 36%;
+    --insight-success-border: 136 78% 91%;
+    --insight-info-bg: 212 100% 96%;
+    --insight-info-fg: 221 83% 53%;
+    --insight-info-border: 211 100% 94%;
+    --insight-opportunity-bg: 262 100% 97%;
+    --insight-opportunity-fg: 262 84% 60%;
+    --insight-opportunity-border: 262 100% 95%;
   }
   .dark {
     --background: 222 47% 11%;
@@ -84,6 +97,19 @@ body {
     --sidebar-accent-foreground: 210 40% 98%;
     --sidebar-border: 217 33% 20%;
     --sidebar-ring: 221 83% 53%;
+    
+    --insight-warning-bg: 48 96% 14%;
+    --insight-warning-fg: 45 96% 79%;
+    --insight-warning-border: 45 96% 24%;
+    --insight-success-bg: 142 76% 10%;
+    --insight-success-fg: 142 76% 66%;
+    --insight-success-border: 142 76% 20%;
+    --insight-info-bg: 221 83% 12%;
+    --insight-info-fg: 221 83% 73%;
+    --insight-info-border: 221 83% 22%;
+    --insight-opportunity-bg: 262 84% 14%;
+    --insight-opportunity-fg: 262 84% 80%;
+    --insight-opportunity-border: 262 84% 24%;
   }
 }
 

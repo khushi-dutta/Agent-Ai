@@ -7,6 +7,7 @@ import { Wallet, TrendingUp, TrendingDown, CreditCard } from "lucide-react";
 import ExpenseBreakdownChart from "@/components/dashboard/income-expense-chart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/use-auth";
+import SmartInsights from "@/components/dashboard/smart-insights";
 
 export default function DashboardPage() {
     const { financialData: data, loading } = useFinancialData();
@@ -22,7 +23,16 @@ export default function DashboardPage() {
                     <Skeleton className="h-40" />
                     <Skeleton className="h-40" />
                 </div>
-                <div className="grid gap-4 lg:grid-cols-5">
+                <div className="space-y-2 mt-6">
+                    <Skeleton className="h-8 w-1/4" />
+                    <div className="grid gap-4 md:grid-cols-2">
+                        <Skeleton className="h-32" />
+                        <Skeleton className="h-32" />
+                        <Skeleton className="h-32" />
+                        <Skeleton className="h-32" />
+                    </div>
+                </div>
+                <div className="grid gap-4 lg:grid-cols-5 mt-6">
                     <div className="lg:col-span-3"><Skeleton className="h-80" /></div>
                     <div className="lg:col-span-2"><Skeleton className="h-80" /></div>
                 </div>
@@ -108,6 +118,8 @@ export default function DashboardPage() {
                     badgeIcon={TrendingUp}
                 />
             </div>
+
+            <SmartInsights financialData={data} />
 
             <div className="grid gap-6 lg:grid-cols-5">
                  <div className="lg:col-span-3">
