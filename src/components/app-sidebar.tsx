@@ -1,7 +1,7 @@
 'use client'
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, MessageSquare, Calculator, BarChart, Database, LogOut, Settings } from "lucide-react";
+import { LayoutDashboard, MessageSquare, Calculator, BarChart, Database, LogOut, Settings, Target } from "lucide-react";
 import { Sidebar, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarHeader, SidebarFooter, SidebarContent } from "@/components/ui/sidebar";
 import { Logo } from "./logo";
 import { useAuth } from "@/hooks/use-auth";
@@ -11,6 +11,7 @@ const menuItems = [
     { href: "/chat", label: "AI Assistant", icon: MessageSquare },
     { href: "/simulations", label: "Simulation", icon: Calculator },
     { href: "/analytics", label: "Analytics", icon: BarChart },
+    { href: "/goals", label: "Goals", icon: Target },
     { href: "/data", label: "Manage Data", icon: Database },
 ];
 

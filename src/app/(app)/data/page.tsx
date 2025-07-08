@@ -47,10 +47,13 @@ export default function DataPage() {
     const addArrayItem = (path: string[], newItem: any) => {
         const newData = JSON.parse(JSON.stringify(financialData));
         let current = newData;
-        for (const key of path) {
-            current = current[key];
+        const arrayPath = path.slice(0);
+        let targetArray = newData;
+        for (const key of arrayPath) {
+          targetArray = targetArray[key];
         }
-        current.push(newItem);
+
+        targetArray.push(newItem);
         setFinancialData(newData as FinancialData);
         toast({ title: "Item Added", description: "A new item has been added." });
     };
@@ -61,11 +64,12 @@ export default function DataPage() {
         const indexToRemove = path[path.length - 1] as number;
         const arrayPath = path.slice(0, -1);
         
+        let targetArray = newData;
         for (const key of arrayPath) {
-            current = current[key as string];
+            targetArray = targetArray[key as string];
         }
         
-        (current as any[]).splice(indexToRemove, 1);
+        (targetArray as any[]).splice(indexToRemove, 1);
         setFinancialData(newData as FinancialData);
         toast({ title: "Item Removed", description: "The item has been removed." });
     };
@@ -265,6 +269,32 @@ export default function DataPage() {
                                     ))}
                                 </div>
                                 <Button className="mt-4" variant="outline" onClick={() => addArrayItem(['expenses', 'monthly'], { category: "", amount: 0 })}><PlusCircle className="mr-2 h-4 w-4" /> Add Expense</Button>
+                            </div>
+                        </AccordionContent>
+                    </AccordionItem>
+                </Card>
+
+                <Card>
+                    <AccordionItem value="goals" className="border-b-0">
+                        <AccordionTrigger className="p-6">
+                           <CardTitle>Financial Goals</CardTitle>
+                        </AccordionTrigger>
+                        <AccordionContent className="px-6 pb-6 space-y-6">
+                            <div>
+                                <div className="space-y-4">
+                                    {financialData.goals.map((goal, index) => (
+                                        <div key={`goal-${index}`} className="p-4 border rounded-lg space-y-4 relative">
+                                            <Button variant="ghost" size="icon" className="absolute top-2 right-2" onClick={() => removeArrayItem(['goals', index])}><Trash2 className="h-4 w-4" /></Button>
+                                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                                <div><Label>Name</Label><Input value={goal.name} onChange={e => handleDataChange(['goals', index, 'name'], e.target.value)} /></div>
+                                                <div><Label>Target (₹)</Label><Input type="number" value={goal.targetAmount} onChange={e => handleDataChange(['goals', index, 'targetAmount'], e.target.value, true)} /></div>
+                                                <div><Label>Current (₹)</Label><Input type="number" value={goal.currentAmount} onChange={e => handleDataChange(['goals', index, 'currentAmount'], e.target.value, true)} /></div>
+                                                <div><Label>Target Date</Label><Input type="date" value={goal.targetDate} onChange={e => handleDataChange(['goals', index, 'targetDate'], e.target.value)} /></div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                <Button className="mt-4" variant="outline" onClick={() => addArrayItem(['goals'], { id: `goal_${Date.now()}`, name: "New Goal", targetAmount: 100000, currentAmount: 0, targetDate: new Date().toISOString().split('T')[0] })}><PlusCircle className="mr-2 h-4 w-4" /> Add Goal</Button>
                             </div>
                         </AccordionContent>
                     </AccordionItem>

@@ -68,6 +68,11 @@ export const sampleFinancialData = {
           premiumFrequency: "annually"
       }
   },
+  goals: [
+    { id: "goal_1", name: "Europe Trip", targetAmount: 200000, currentAmount: 75000, targetDate: "2025-06-01" },
+    { id: "goal_2", name: "New MacBook Pro", targetAmount: 250000, currentAmount: 180000, targetDate: "2024-12-31" },
+    { id: "goal_3", name: "Downpayment for Car", targetAmount: 300000, currentAmount: 50000, targetDate: "2026-01-01" }
+  ],
   netWorthHistory: [
     { date: "2023-01-01", value: 100000 },
     { date: "2023-04-01", value: 120000 },
@@ -128,6 +133,7 @@ export const blankFinancialData: FinancialData = {
           premiumFrequency: "annually"
       }
   },
+  goals: [],
   netWorthHistory: [],
   creditScore: {
     current: 0,
