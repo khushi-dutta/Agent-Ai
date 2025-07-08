@@ -4,10 +4,68 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
-import { ShieldCheck, Eye, Bell, User } from "lucide-react";
+import { ShieldCheck, Eye, Bell, User, Download, Trash2, FileJson } from "lucide-react";
 import { Label } from "@/components/ui/label";
+import { useFinancialData } from "@/hooks/use-financial-data";
+import { useAuth } from "@/hooks/use-auth";
+import { useToast } from "@/hooks/use-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export default function SettingsPage() {
+    const { financialData } = useFinancialData();
+    const { deleteAccount } = useAuth();
+    const { toast } = useToast();
+
+    const handleExportData = () => {
+        try {
+            const jsonString = `data:text/json;charset=utf-8,${encodeURIComponent(
+                JSON.stringify(financialData, null, 2)
+            )}`;
+            const link = document.createElement("a");
+            link.href = jsonString;
+            link.download = "fingenie_data.json";
+
+            link.click();
+            toast({
+                title: "Data Exported",
+                description: "Your financial data has been downloaded.",
+            });
+        } catch (error) {
+            toast({
+                variant: "destructive",
+                title: "Export Failed",
+                description: "Could not export your data. Please try again.",
+            });
+        }
+    };
+    
+    const handleDeleteAccount = async () => {
+        try {
+            await deleteAccount();
+            toast({
+                title: "Account Deleted",
+                description: "Your account and all associated data have been permanently deleted.",
+            });
+        } catch (error) {
+            toast({
+                variant: "destructive",
+                title: "Deletion Failed",
+                description: "Could not delete your account. This may require you to log in again for security reasons.",
+            });
+        }
+    }
+
+
     return (
         <div className="space-y-8 max-w-4xl mx-auto animate-fade-in">
             <div>
@@ -68,6 +126,54 @@ export default function SettingsPage() {
                      <p className="text-muted-foreground text-sm">Profile editing options will be available here in a future update.</p>
                 </CardContent>
             </Card>
+            
+            <Card>
+                <CardHeader>
+                    <div className="flex items-center gap-2">
+                        <FileJson className="h-6 w-6 text-primary" />
+                        <CardTitle className="font-headline text-2xl">Data Export & Management</CardTitle>
+                    </div>
+                    <CardDescription>Export or delete your account data.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between p-4 rounded-lg bg-secondary/50">
+                        <div>
+                            <h3 className="font-semibold">Export Your Data</h3>
+                            <p className="text-sm text-muted-foreground">Download all your financial data in JSON format.</p>
+                        </div>
+                        <Button onClick={handleExportData} className="bg-stat-income hover:bg-stat-income/90 text-primary-foreground">
+                           <Download className="mr-2 h-4 w-4" /> Export Data
+                        </Button>
+                    </div>
+                    <div className="flex items-center justify-between p-4 rounded-lg bg-destructive/10 border border-destructive/20">
+                        <div>
+                            <h3 className="font-semibold text-destructive">Delete Account</h3>
+                            <p className="text-sm text-destructive/80">Permanently delete your account and all data.</p>
+                        </div>
+                        <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                                <Button variant="destructive">
+                                    <Trash2 className="mr-2 h-4 w-4" /> Delete Account
+                                </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        This action cannot be undone. This will permanently delete your account and remove all your data from our servers.
+                                    </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction onClick={handleDeleteAccount} className="bg-destructive hover:bg-destructive/90">
+                                        Yes, delete account
+                                    </AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
+                    </div>
+                </CardContent>
+             </Card>
 
             <Card>
                 <CardHeader>

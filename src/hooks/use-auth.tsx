@@ -8,7 +8,8 @@ import {
     signInWithPopup, 
     signOut as firebaseSignOut,
     createUserWithEmailAndPassword,
-    signInWithEmailAndPassword
+    signInWithEmailAndPassword,
+    deleteUser
 } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { useRouter } from 'next/navigation';
@@ -20,6 +21,7 @@ interface AuthContextType {
     signOut: () => Promise<void>;
     signUpWithEmail: (email:string, password:string) => Promise<any>;
     signInWithEmail: (email:string, password:string) => Promise<any>;
+    deleteAccount: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -80,7 +82,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
     };
 
-    const value = { user, loading, signInWithGoogle, signOut, signUpWithEmail, signInWithEmail };
+    const deleteAccount = async () => {
+        const currentUser = auth.currentUser;
+        if (currentUser) {
+            try {
+                // Clear local storage data
+                const storedDataKey = `financialData_${currentUser.uid}`;
+                localStorage.removeItem(storedDataKey);
+                
+                await deleteUser(currentUser);
+                router.push('/signup');
+            } catch (error) {
+                console.error("Error deleting account", error);
+                // Handle specific errors like 'auth/requires-recent-login'
+                throw error;
+            }
+        } else {
+            throw new Error("No user is currently signed in.");
+        }
+    };
+
+    const value = { user, loading, signInWithGoogle, signOut, signUpWithEmail, signInWithEmail, deleteAccount };
 
     return (
         <AuthContext.Provider value={value}>
