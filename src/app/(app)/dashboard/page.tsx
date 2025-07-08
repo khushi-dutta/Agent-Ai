@@ -119,8 +119,6 @@ export default function DashboardPage() {
                 />
             </div>
 
-            <SmartInsights financialData={data} />
-
             <div className="grid gap-6 lg:grid-cols-5">
                  <div className="lg:col-span-3">
                     <NetWorthChart data={data.netWorthHistory} />
@@ -129,6 +127,8 @@ export default function DashboardPage() {
                     <ExpenseBreakdownChart data={data.expenses.monthly} />
                  </div>
             </div>
+            
+            <SmartInsights financialData={data} />
         </div>
     )
 }
