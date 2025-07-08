@@ -1,8 +1,13 @@
+'use client'
+
+import * as React from 'react'
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Logo } from '@/components/logo';
 import { Bot, LineChart, ShieldCheck, Star, Facebook, Twitter, Linkedin } from 'lucide-react';
 import Image from 'next/image';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
+import Autoplay from 'embla-carousel-autoplay'
 
 const TestimonialCard = ({ name, role, text, avatarSrc }: { name: string, role: string, text: string, avatarSrc: string }) => {
     return (
@@ -25,6 +30,10 @@ const TestimonialCard = ({ name, role, text, avatarSrc }: { name: string, role: 
 }
 
 export default function LandingPage() {
+  const plugin = React.useRef(
+    Autoplay({ delay: 4000, stopOnInteraction: true })
+  )
+
   return (
     <div className="flex flex-col min-h-screen bg-background animate-fade-in">
       <header className="container mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between sticky top-0 bg-background/80 backdrop-blur-sm z-50">
@@ -113,26 +122,61 @@ export default function LandingPage() {
                     <h2 className="text-3xl md:text-4xl font-headline font-bold">Loved by users worldwide</h2>
                     <p className="max-w-2xl mx-auto text-muted-foreground mt-4">Don't just take our word for it. Here's what our users have to say.</p>
                 </div>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <TestimonialCard 
-                        name="Sarah K." 
-                        role="Freelance Designer"
-                        text="FinGenie has been a game-changer for managing my finances. The AI insights are scarily accurate and have helped me save more than I thought possible."
-                        avatarSrc="https://placehold.co/100x100.png"
-                    />
-                    <TestimonialCard 
-                        name="Michael R." 
-                        role="Tech Startup Founder"
-                        text="As a busy founder, I don't have time to track every penny. FinGenie does it for me and gives me a clear picture of my financial health in seconds."
-                        avatarSrc="https://placehold.co/100x100.png"
-                    />
-                     <TestimonialCard 
-                        name="Priya S." 
-                        role="Marketing Manager"
-                        text="I finally feel in control of my money. Setting and tracking goals is so easy, and the upcoming payment reminders have saved me from late fees twice!"
-                        avatarSrc="https://placehold.co/100x100.png"
-                    />
-                </div>
+                <Carousel
+                  plugins={[plugin.current]}
+                  className="w-full max-w-xs sm:max-w-xl md:max-w-2xl lg:max-w-4xl xl:max-w-6xl mx-auto"
+                  onMouseEnter={plugin.current.stop}
+                  onMouseLeave={plugin.current.reset}
+                  opts={{
+                    align: "start",
+                    loop: true,
+                  }}
+                >
+                  <CarouselContent className="-ml-4">
+                    <CarouselItem className="pl-4 md:basis-1/2 lg:basis-1/3">
+                      <div className="p-1 h-full">
+                        <TestimonialCard 
+                            name="Sarah K." 
+                            role="Freelance Designer"
+                            text="FinGenie has been a game-changer for managing my finances. The AI insights are scarily accurate and have helped me save more than I thought possible."
+                            avatarSrc="https://placehold.co/100x100.png"
+                        />
+                      </div>
+                    </CarouselItem>
+                    <CarouselItem className="pl-4 md:basis-1/2 lg:basis-1/3">
+                      <div className="p-1 h-full">
+                        <TestimonialCard 
+                            name="Michael R." 
+                            role="Tech Startup Founder"
+                            text="As a busy founder, I don't have time to track every penny. FinGenie does it for me and gives me a clear picture of my financial health in seconds."
+                            avatarSrc="https://placehold.co/100x100.png"
+                        />
+                      </div>
+                    </CarouselItem>
+                    <CarouselItem className="pl-4 md:basis-1/2 lg:basis-1/3">
+                      <div className="p-1 h-full">
+                        <TestimonialCard 
+                            name="Priya S." 
+                            role="Marketing Manager"
+                            text="I finally feel in control of my money. Setting and tracking goals is so easy, and the upcoming payment reminders have saved me from late fees twice!"
+                            avatarSrc="https://placehold.co/100x100.png"
+                        />
+                      </div>
+                    </CarouselItem>
+                    <CarouselItem className="pl-4 md:basis-1/2 lg:basis-1/3">
+                      <div className="p-1 h-full">
+                        <TestimonialCard 
+                            name="Alex T." 
+                            role="Student"
+                            text="FinGenie is super intuitive. I'm learning so much about budgeting and saving for the future. It's making 'adulting' feel less scary!"
+                            avatarSrc="https://placehold.co/100x100.png"
+                        />
+                      </div>
+                    </CarouselItem>
+                  </CarouselContent>
+                  <CarouselPrevious className="hidden sm:flex" />
+                  <CarouselNext className="hidden sm:flex" />
+                </Carousel>
             </div>
         </section>
         
