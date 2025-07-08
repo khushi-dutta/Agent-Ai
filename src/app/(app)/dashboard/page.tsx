@@ -11,7 +11,9 @@ export default async function DashboardPage() {
     
     const totalAssets = data.accounts.reduce((sum, acc) => sum + acc.balance, 0) + 
                         data.investments.stocks.reduce((sum, stock) => sum + stock.currentValue, 0) +
-                        data.investments.mutualFunds.reduce((sum, mf) => sum + mf.currentValue, 0);
+                        data.investments.mutualFunds.reduce((sum, mf) => sum + mf.currentValue, 0) +
+                        data.investments.epf.balance +
+                        (data.insurance.life.surrenderValue || 0);
 
     const totalLiabilities = data.liabilities.loans.reduce((sum, loan) => sum + loan.balance, 0) + 
                              data.liabilities.creditCards.reduce((sum, card) => sum + card.outstanding, 0);

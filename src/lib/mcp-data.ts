@@ -5,8 +5,9 @@ export const financialData = {
     age: 32,
   },
   accounts: [
-    { type: "Savings", balance: 50000, currency: "INR" },
-    { type: "Checking", balance: 25000, currency: "INR" },
+    { type: "Savings", balance: 50000, currency: "INR", bank: "HDFC Bank" },
+    { type: "Checking", balance: 25000, currency: "INR", bank: "ICICI Bank" },
+    { type: "Fixed Deposit", balance: 100000, currency: "INR", bank: "SBI", maturityDate: "2025-12-31" }
   ],
   investments: {
     stocks: [
@@ -19,14 +20,26 @@ export const financialData = {
     ],
     sip: [
         { name: "Mirae Asset Large Cap", amount: 5000, frequency: "monthly" }
-    ]
+    ],
+    epf: {
+        balance: 250000,
+        employeeContribution: 75000,
+        employerContribution: 75000
+    }
   },
   liabilities: {
-    loans: [{ type: "Personal", balance: 50000, interestRate: 12 }],
-    creditCards: [{ name: "HDFC Millennia", outstanding: 15000 }],
+    loans: [
+        { type: "Home", balance: 2500000, interestRate: 8.5, tenureMonths: 240 },
+        { type: "Personal", balance: 50000, interestRate: 12, tenureMonths: 36 }
+    ],
+    creditCards: [
+        { name: "HDFC Millennia", outstanding: 15000, limit: 100000 },
+        { name: "Amex Platinum", outstanding: 25000, limit: 500000 }
+    ],
   },
   income: [
     { source: "Salary", amount: 1200000, frequency: "annually" },
+    { source: "Rental", amount: 15000, frequency: "monthly"}
   ],
   expenses: {
     monthly: [
@@ -36,8 +49,24 @@ export const financialData = {
       { category: "Shopping", amount: 10000 },
       { category: "Entertainment", amount: 8000 },
       { category: "Transportation", amount: 4000 },
+      { category: "EMI", amount: 22000 },
       { category: "Other", amount: 3000 },
     ],
+  },
+  insurance: {
+      life: {
+          policy: "LIC Jeevan Anand",
+          sumAssured: 5000000,
+          premium: 25000,
+          premiumFrequency: "annually",
+          surrenderValue: 150000
+      },
+      health: {
+          policy: "HDFC Ergo Optima Restore",
+          coverage: 1000000,
+          premium: 15000,
+          premiumFrequency: "annually"
+      }
   },
   netWorthHistory: [
     { date: "2023-01-01", value: 100000 },

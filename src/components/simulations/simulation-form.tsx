@@ -30,8 +30,20 @@ interface SimulationFormProps {
 export default function SimulationForm({ onSubmit, isLoading }: SimulationFormProps) {
     const totalSavings = financialData.accounts.reduce((sum, acc) => sum + acc.balance, 0) + 
                          financialData.investments.stocks.reduce((sum, stock) => sum + stock.currentValue, 0) +
-                         financialData.investments.mutualFunds.reduce((sum, mf) => sum + mf.currentValue, 0);
-    const annualIncome = financialData.income.find(inc => inc.source === 'Salary')?.amount ?? 0;
+                         financialData.investments.mutualFunds.reduce((sum, mf) => sum + mf.currentValue, 0) +
+                         financialData.investments.epf.balance +
+                         (financialData.insurance.life.surrenderValue || 0);
+                         
+    const annualIncome = financialData.income.reduce((sum, inc) => {
+        if (inc.frequency === 'annually') {
+            return sum + inc.amount;
+        }
+        if (inc.frequency === 'monthly') {
+            return sum + inc.amount * 12;
+        }
+        return sum;
+    }, 0);
+
     const monthlyExpenses = financialData.expenses.monthly.reduce((sum, exp) => sum + exp.amount, 0);
 
     const form = useForm<z.infer<typeof formSchema>>({
