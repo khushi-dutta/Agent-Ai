@@ -1,6 +1,8 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from '@/lib/firebase';
 import { blankFinancialData, sampleFinancialData, FinancialData } from '@/lib/mcp-data';
 import { useAuth } from './use-auth';
 
@@ -27,7 +29,7 @@ export function FinancialDataProvider({ children }: { children: ReactNode }) {
         let isMounted = true;
         setLoading(true);
 
-        const loadData = () => {
+        const loadData = async () => {
             try {
                 if (user.email === DEMO_USER_EMAIL) {
                     if (isMounted) {
@@ -36,12 +38,12 @@ export function FinancialDataProvider({ children }: { children: ReactNode }) {
                     return;
                 }
 
-                const storedDataKey = `financialData_${user.uid}`;
-                const storedData = localStorage.getItem(storedDataKey);
+                const docRef = doc(db, "financialData", user.uid);
+                const docSnap = await getDoc(docRef);
                 
-                if (storedData) {
+                if (docSnap.exists()) {
                     if (isMounted) {
-                        setFinancialData(JSON.parse(storedData));
+                        setFinancialData(docSnap.data() as FinancialData);
                     }
                 } else {
                     const newUserData = JSON.parse(JSON.stringify(blankFinancialData));
@@ -49,12 +51,12 @@ export function FinancialDataProvider({ children }: { children: ReactNode }) {
                     newUserData.user.email = user.email || "";
                     
                     if (isMounted) {
+                        await setDoc(docRef, newUserData);
                         setFinancialData(newUserData);
-                        localStorage.setItem(storedDataKey, JSON.stringify(newUserData));
                     }
                 }
             } catch (error) {
-                console.error("Failed to load or initialize financial data", error);
+                console.error("Failed to load or initialize financial data from Firestore", error);
                 if (isMounted) {
                     setFinancialData(blankFinancialData);
                 }
@@ -74,15 +76,20 @@ export function FinancialDataProvider({ children }: { children: ReactNode }) {
     }, [user]);
 
     const handleSetFinancialData = (data: FinancialData) => {
+        // Optimistic update for UI responsiveness
         setFinancialData(data);
         
         if (user && user.email !== DEMO_USER_EMAIL) {
-            try {
-                const storedDataKey = `financialData_${user.uid}`;
-                localStorage.setItem(storedDataKey, JSON.stringify(data));
-            } catch (error) {
-                console.error("Failed to save financial data to storage", error);
-            }
+            const saveData = async () => {
+                try {
+                    const docRef = doc(db, "financialData", user.uid);
+                    await setDoc(docRef, data);
+                } catch (error) {
+                    console.error("Failed to save financial data to Firestore", error);
+                    // Optionally: revert optimistic update and show toast
+                }
+            };
+            saveData();
         }
     };
 

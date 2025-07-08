@@ -11,7 +11,8 @@ import {
     signInWithEmailAndPassword,
     deleteUser
 } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { doc, deleteDoc } from 'firebase/firestore';
+import { auth, db } from '@/lib/firebase';
 import { useRouter } from 'next/navigation';
 
 interface AuthContextType {
@@ -86,9 +87,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const currentUser = auth.currentUser;
         if (currentUser) {
             try {
-                // Clear local storage data
-                const storedDataKey = `financialData_${currentUser.uid}`;
-                localStorage.removeItem(storedDataKey);
+                // Delete user's financial data from Firestore
+                await deleteDoc(doc(db, "financialData", currentUser.uid));
                 
                 await deleteUser(currentUser);
                 router.push('/signup');
