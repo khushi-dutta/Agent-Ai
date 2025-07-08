@@ -13,9 +13,11 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/hooks/use-auth";
 import { ThemeToggle } from "./theme-toggle";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
     const { user, signOut } = useAuth();
+    const router = useRouter();
     
     const getInitials = (name: string | null | undefined) => {
       if (!name) return 'U';
@@ -53,7 +55,9 @@ export default function Header() {
                             </div>
                         </DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>Settings</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => router.push('/settings')} className="cursor-pointer">
+                            Settings
+                        </DropdownMenuItem>
                         <DropdownMenuItem>Support</DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem onClick={signOut} className="cursor-pointer">

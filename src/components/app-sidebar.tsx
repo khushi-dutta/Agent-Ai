@@ -1,7 +1,7 @@
 'use client'
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, MessageSquare, Calculator, BarChart, Database, LogOut } from "lucide-react";
+import { LayoutDashboard, MessageSquare, Calculator, BarChart, Database, LogOut, Settings } from "lucide-react";
 import { Sidebar, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarHeader, SidebarFooter, SidebarContent } from "@/components/ui/sidebar";
 import { Logo } from "./logo";
 import { useAuth } from "@/hooks/use-auth";
@@ -43,6 +43,18 @@ export default function AppSidebar() {
             </SidebarContent>
             <SidebarFooter>
                 <SidebarMenu className="p-2">
+                     <SidebarMenuItem>
+                        <SidebarMenuButton
+                            asChild
+                            isActive={pathname.startsWith('/settings')}
+                            tooltip="Settings"
+                        >
+                            <Link href="/settings">
+                                <Settings />
+                                <span>Settings</span>
+                            </Link>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
                      <SidebarMenuItem>
                         <SidebarMenuButton onClick={signOut} tooltip="Logout">
                             <LogOut />
