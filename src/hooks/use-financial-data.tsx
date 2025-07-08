@@ -1,7 +1,8 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { financialData as initialData, FinancialData } from '@/lib/mcp-data';
+import { blankFinancialData, FinancialData } from '@/lib/mcp-data';
+import { useAuth } from './use-auth';
 
 interface FinancialDataContextType {
     financialData: FinancialData;
@@ -12,32 +13,72 @@ interface FinancialDataContextType {
 const FinancialDataContext = createContext<FinancialDataContextType | undefined>(undefined);
 
 export function FinancialDataProvider({ children }: { children: ReactNode }) {
-    const [financialData, setFinancialData] = useState<FinancialData>(initialData);
+    const { user } = useAuth();
+    const [financialData, setFinancialData] = useState<FinancialData | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        try {
-            const storedData = localStorage.getItem('financialData');
-            if (storedData) {
-                setFinancialData(JSON.parse(storedData));
-            }
-        } catch (error) {
-            console.error("Failed to load financial data from storage", error);
-        } finally {
-            setLoading(false);
+        if (!user) {
+            return;
         }
-    }, []);
+
+        let isMounted = true;
+
+        const loadData = () => {
+            try {
+                const storedDataKey = `financialData_${user.uid}`;
+                const storedData = localStorage.getItem(storedDataKey);
+                if (storedData) {
+                    if (isMounted) {
+                        setFinancialData(JSON.parse(storedData));
+                    }
+                } else {
+                    const newUserData = JSON.parse(JSON.stringify(blankFinancialData));
+                    newUserData.user.name = user.displayName || "New User";
+                    newUserData.user.email = user.email || "";
+                    
+                    if (isMounted) {
+                        setFinancialData(newUserData);
+                        localStorage.setItem(storedDataKey, JSON.stringify(newUserData));
+                    }
+                }
+            } catch (error) {
+                console.error("Failed to load or initialize financial data", error);
+                if (isMounted) {
+                    setFinancialData(blankFinancialData);
+                }
+            } finally {
+                if (isMounted) {
+                    setLoading(false);
+                }
+            }
+        };
+        
+        loadData();
+
+        return () => {
+            isMounted = false;
+        };
+
+    }, [user]);
 
     const handleSetFinancialData = (data: FinancialData) => {
         setFinancialData(data);
-        try {
-            localStorage.setItem('financialData', JSON.stringify(data));
-        } catch (error) {
-            console.error("Failed to save financial data to storage", error);
+        if (user) {
+            try {
+                const storedDataKey = `financialData_${user.uid}`;
+                localStorage.setItem(storedDataKey, JSON.stringify(data));
+            } catch (error) {
+                console.error("Failed to save financial data to storage", error);
+            }
         }
     };
 
-    const value = { financialData, setFinancialData: handleSetFinancialData, loading };
+    const value = { 
+        financialData: financialData!, 
+        setFinancialData: handleSetFinancialData, 
+        loading: loading || !financialData 
+    };
 
     return (
         <FinancialDataContext.Provider value={value}>

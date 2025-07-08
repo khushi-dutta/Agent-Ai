@@ -1,4 +1,4 @@
-export const financialData = {
+export const sampleFinancialData = {
   user: {
     name: "Jane Doe",
     email: "jane.doe@example.com",
@@ -86,4 +86,51 @@ export const financialData = {
   },
 };
 
-export type FinancialData = typeof financialData;
+export type FinancialData = typeof sampleFinancialData;
+
+export const blankFinancialData: FinancialData = {
+  user: {
+    name: "",
+    email: "",
+    age: 0,
+  },
+  accounts: [],
+  investments: {
+    stocks: [],
+    mutualFunds: [],
+    sip: [],
+    epf: {
+        balance: 0,
+        employeeContribution: 0,
+        employerContribution: 0
+    }
+  },
+  liabilities: {
+    loans: [],
+    creditCards: [],
+  },
+  income: [],
+  expenses: {
+    monthly: [],
+  },
+  insurance: {
+      life: {
+          policy: "",
+          sumAssured: 0,
+          premium: 0,
+          premiumFrequency: "annually",
+          surrenderValue: 0
+      },
+      health: {
+          policy: "",
+          coverage: 0,
+          premium: 0,
+          premiumFrequency: "annually"
+      }
+  },
+  netWorthHistory: [],
+  creditScore: {
+    current: 0,
+    history: [],
+  },
+};

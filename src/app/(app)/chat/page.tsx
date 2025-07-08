@@ -2,15 +2,15 @@
 
 import { useState, useRef, useEffect } from "react";
 import { answerFinancialQuestion } from "@/ai/flows/answer-financial-question";
-import { financialData } from "@/lib/mcp-data"; // Using mock data
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useFinancialData } from "@/hooks/use-financial-data";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Bot, Send, User, Loader } from "lucide-react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { Logo } from "@/components/logo";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Message {
     id: string;
@@ -19,6 +19,7 @@ interface Message {
 }
 
 export default function ChatPage() {
+    const { financialData, loading: dataLoading } = useFinancialData();
     const [messages, setMessages] = useState<Message[]>([
       { id: '1', text: "Hello! I'm FinGenie. How can I help you with your finances today? You can ask things like 'What is my net worth?' or 'How much did I spend on groceries last month?'.", sender: 'ai' }
     ]);
@@ -34,7 +35,7 @@ export default function ChatPage() {
 
     const handleSendMessage = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!input.trim() || isLoading) return;
+        if (!input.trim() || isLoading || dataLoading) return;
 
         const userMessage: Message = { id: Date.now().toString(), text: input, sender: 'user' };
         setMessages(prev => [...prev, userMessage]);
@@ -57,6 +58,27 @@ export default function ChatPage() {
         }
     };
     
+    if (dataLoading) {
+      return (
+        <div className="h-[calc(100vh-10rem)] flex flex-col">
+          <Card className="flex-1 flex flex-col w-full max-w-3xl mx-auto">
+            <CardHeader>
+              <Skeleton className="h-8 w-1/2" />
+            </CardHeader>
+            <CardContent className="flex-1 overflow-hidden space-y-6">
+              <div className="flex items-start gap-3 justify-start">
+                  <Skeleton className="h-8 w-8 rounded-full"/>
+                  <Skeleton className="h-20 w-2/3" />
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Skeleton className="h-10 w-full" />
+            </CardFooter>
+          </Card>
+        </div>
+      )
+    }
+
     return (
       <div className="h-[calc(100vh-10rem)] flex flex-col">
         <Card className="flex-1 flex flex-col w-full max-w-3xl mx-auto">
