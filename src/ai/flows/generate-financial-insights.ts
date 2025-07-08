@@ -11,7 +11,7 @@
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
-export const InsightSchema = z.object({
+const InsightSchema = z.object({
     title: z.string().describe("A short, catchy title for the insight."),
     description: z.string().describe("A one-sentence description explaining the insight."),
     category: z.enum(['warning', 'success', 'info', 'opportunity']).describe("The category of the insight."),
