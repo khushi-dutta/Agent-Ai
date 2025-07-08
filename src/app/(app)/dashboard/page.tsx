@@ -8,6 +8,7 @@ import ExpenseBreakdownChart from "@/components/dashboard/income-expense-chart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/use-auth";
 import SmartInsights from "@/components/dashboard/smart-insights";
+import UpcomingPayments from "@/components/dashboard/upcoming-payments";
 
 export default function DashboardPage() {
     const { financialData: data, loading } = useFinancialData();
@@ -17,24 +18,27 @@ export default function DashboardPage() {
         return (
             <div className="space-y-6">
                 <Skeleton className="h-10 w-1/2" />
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
                     <Skeleton className="h-40" />
                     <Skeleton className="h-40" />
                     <Skeleton className="h-40" />
                     <Skeleton className="h-40" />
                 </div>
-                <div className="space-y-2 mt-6">
+                 <div className="space-y-4 mt-6">
                     <Skeleton className="h-8 w-1/4" />
-                    <div className="grid gap-4 md:grid-cols-2">
+                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                         <Skeleton className="h-32" />
                         <Skeleton className="h-32" />
                         <Skeleton className="h-32" />
                         <Skeleton className="h-32" />
                     </div>
                 </div>
-                <div className="grid gap-4 lg:grid-cols-5 mt-6">
-                    <div className="lg:col-span-3"><Skeleton className="h-80" /></div>
+                <div className="grid gap-6 lg:grid-cols-3 mt-6">
                     <div className="lg:col-span-2"><Skeleton className="h-80" /></div>
+                    <div className="lg:col-span-1"><Skeleton className="h-80" /></div>
+                </div>
+                 <div className="grid gap-6 mt-6">
+                    <Skeleton className="h-80" />
                 </div>
             </div>
         )
@@ -118,17 +122,21 @@ export default function DashboardPage() {
                     badgeIcon={TrendingUp}
                 />
             </div>
-
-            <div className="grid gap-6 lg:grid-cols-5">
-                 <div className="lg:col-span-3">
-                    <NetWorthChart data={data.netWorthHistory} />
-                 </div>
-                 <div className="lg:col-span-2">
-                    <ExpenseBreakdownChart data={data.expenses.monthly} />
-                 </div>
-            </div>
             
             <SmartInsights financialData={data} />
+
+            <div className="grid gap-6 lg:grid-cols-3">
+                 <div className="lg:col-span-2">
+                    <NetWorthChart data={data.netWorthHistory} />
+                 </div>
+                 <div className="lg:col-span-1">
+                    <UpcomingPayments expenses={data.expenses.monthly} />
+                 </div>
+            </div>
+
+            <div className="grid gap-6">
+                <ExpenseBreakdownChart data={data.expenses.monthly} />
+            </div>
         </div>
     )
 }
