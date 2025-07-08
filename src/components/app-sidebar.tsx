@@ -1,7 +1,7 @@
 'use client'
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, MessageSquare, Calculator, BarChart, Settings, LogOut } from "lucide-react";
+import { LayoutDashboard, MessageSquare, Calculator, BarChart, Database, LogOut } from "lucide-react";
 import { Sidebar, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarHeader, SidebarFooter, SidebarContent } from "@/components/ui/sidebar";
 import { Logo } from "./logo";
 import { useAuth } from "@/hooks/use-auth";
@@ -11,6 +11,7 @@ const menuItems = [
     { href: "/chat", label: "AI Assistant", icon: MessageSquare },
     { href: "/simulations", label: "Simulation", icon: Calculator },
     { href: "/analytics", label: "Analytics", icon: BarChart },
+    { href: "/data", label: "Manage Data", icon: Database },
 ];
 
 export default function AppSidebar() {
@@ -42,14 +43,6 @@ export default function AppSidebar() {
             </SidebarContent>
             <SidebarFooter>
                 <SidebarMenu className="p-2">
-                    <SidebarMenuItem>
-                        <SidebarMenuButton asChild tooltip="Settings">
-                            <Link href="#">
-                                <Settings />
-                                <span>Settings</span>
-                            </Link>
-                        </SidebarMenuButton>
-                    </SidebarMenuItem>
                      <SidebarMenuItem>
                         <SidebarMenuButton onClick={signOut} tooltip="Logout">
                             <LogOut />
