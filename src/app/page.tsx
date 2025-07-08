@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 export default function LandingPage() {
   return (
-    <div className="flex flex-col min-h-screen bg-background">
+    <div className="flex flex-col min-h-screen bg-background animate-fade-in">
       <header className="container mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         <Logo />
         <nav className="flex items-center gap-2 sm:gap-4">
@@ -20,16 +20,18 @@ export default function LandingPage() {
       </header>
       <main className="flex-1">
         <section className="container mx-auto px-4 sm:px-6 lg:px-8 text-center py-16 md:py-24">
-          <h1 className="text-4xl md:text-6xl font-headline font-bold tracking-tighter mb-4">
-            Your Smart Financial AI
-          </h1>
-          <p className="max-w-2xl mx-auto text-lg md:text-xl text-muted-foreground mb-8">
-            Connect your finances, chat with our AI assistant, and get personalized insights to achieve your financial goals faster.
-          </p>
-          <div className="flex justify-center gap-4">
-            <Button size="lg" asChild>
-              <Link href="/signup">Start for Free</Link>
-            </Button>
+          <div className="animate-slide-up">
+            <h1 className="text-4xl md:text-6xl font-headline font-bold tracking-tighter mb-4">
+              Your Smart Financial AI
+            </h1>
+            <p className="max-w-2xl mx-auto text-lg md:text-xl text-muted-foreground mb-8">
+              Connect your finances, chat with our AI assistant, and get personalized insights to achieve your financial goals faster.
+            </p>
+            <div className="flex justify-center gap-4">
+              <Button size="lg" asChild>
+                <Link href="/signup">Start for Free</Link>
+              </Button>
+            </div>
           </div>
         </section>
 
@@ -39,7 +41,7 @@ export default function LandingPage() {
             alt="FinGenie Dashboard Preview"
             width={1200}
             height={600}
-            className="rounded-xl shadow-2xl mx-auto"
+            className="rounded-xl shadow-2xl mx-auto animate-slide-up"
             data-ai-hint="dashboard application"
           />
         </section>

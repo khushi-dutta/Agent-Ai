@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import type { Insight } from '@/ai/flows/generate-financial-insights';
 
 const insightCardVariants = cva(
-  'rounded-xl border p-4 flex flex-col justify-between transition-all hover:shadow-lg',
+  'rounded-xl border p-4 flex flex-col justify-between transition-all hover:shadow-lg hover:-translate-y-1',
   {
     variants: {
       category: {

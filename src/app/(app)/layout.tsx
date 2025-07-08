@@ -45,7 +45,7 @@ function AuthenticatedLayout({ children }: PropsWithChildren) {
         <AppSidebar />
         <div className="flex flex-col flex-1 min-h-screen">
           <Header />
-          <main className="flex-1 p-4 sm:p-6 lg:p-8 bg-secondary">
+          <main className="flex-1 p-4 sm:p-6 lg:p-8 bg-secondary animate-fade-in">
             {children}
           </main>
         </div>

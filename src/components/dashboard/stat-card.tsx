@@ -36,7 +36,7 @@ export default function StatCard({ title, value, icon: Icon, variant, descriptio
   const classes = variantClasses[variant];
 
   return (
-    <Card>
+    <Card className="transition-all duration-200 hover:shadow-lg hover:-translate-y-1">
       <CardHeader className="pb-4">
         <div className="flex items-start justify-between">
           <div className={cn("p-2.5 rounded-lg text-primary-foreground", classes.iconWrapper)}>

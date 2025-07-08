@@ -57,7 +57,7 @@ function LoginPageContent() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-secondary p-4">
-      <Card className="mx-auto max-w-sm w-full">
+      <Card className="mx-auto max-w-sm w-full animate-slide-up">
         <CardHeader className="text-center space-y-2">
             <Link href="/" className="inline-block mx-auto">
                 <Logo />
