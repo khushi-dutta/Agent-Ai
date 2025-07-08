@@ -15,13 +15,13 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const AnswerFinancialQuestionInputSchema = z.object({
-  question: z.string().describe('The user's financial question in natural language.'),
-  financialData: z.string().describe('The user’s financial data in JSON format.'),
+  question: z.string().describe("The user's financial question in natural language."),
+  financialData: z.string().describe("The user's financial data in JSON format."),
 });
 export type AnswerFinancialQuestionInput = z.infer<typeof AnswerFinancialQuestionInputSchema>;
 
 const AnswerFinancialQuestionOutputSchema = z.object({
-  answer: z.string().describe('The answer to the user’s financial question.'),
+  answer: z.string().describe("The answer to the user's financial question."),
 });
 export type AnswerFinancialQuestionOutput = z.infer<typeof AnswerFinancialQuestionOutputSchema>;
 
@@ -31,10 +31,10 @@ export async function answerFinancialQuestion(input: AnswerFinancialQuestionInpu
 
 const shouldIncludeDataTool = ai.defineTool({
   name: 'shouldIncludeData',
-  description: 'Determines whether to include a specific piece of financial data in the response to the user’s question.',
+  description: "Determines whether to include a specific piece of financial data in the response to the user's question.",
   inputSchema: z.object({
     dataField: z.string().describe('The specific field from the financial data to consider including.'),
-    question: z.string().describe('The user’s financial question.'),
+    question: z.string().describe("The user's financial question."),
   }),
   outputSchema: z.boolean().describe('True if the data field should be included, false otherwise.'),
 }, async (input) => {
