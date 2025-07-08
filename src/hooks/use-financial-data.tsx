@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { blankFinancialData, FinancialData } from '@/lib/mcp-data';
+import { blankFinancialData, sampleFinancialData, FinancialData } from '@/lib/mcp-data';
 import { useAuth } from './use-auth';
 
 interface FinancialDataContextType {
@@ -11,6 +11,8 @@ interface FinancialDataContextType {
 }
 
 const FinancialDataContext = createContext<FinancialDataContextType | undefined>(undefined);
+
+const DEMO_USER_EMAIL = 'john.doe@example.com';
 
 export function FinancialDataProvider({ children }: { children: ReactNode }) {
     const { user } = useAuth();
@@ -23,11 +25,20 @@ export function FinancialDataProvider({ children }: { children: ReactNode }) {
         }
 
         let isMounted = true;
+        setLoading(true);
 
         const loadData = () => {
             try {
+                if (user.email === DEMO_USER_EMAIL) {
+                    if (isMounted) {
+                        setFinancialData(sampleFinancialData);
+                    }
+                    return;
+                }
+
                 const storedDataKey = `financialData_${user.uid}`;
                 const storedData = localStorage.getItem(storedDataKey);
+                
                 if (storedData) {
                     if (isMounted) {
                         setFinancialData(JSON.parse(storedData));
@@ -64,7 +75,8 @@ export function FinancialDataProvider({ children }: { children: ReactNode }) {
 
     const handleSetFinancialData = (data: FinancialData) => {
         setFinancialData(data);
-        if (user) {
+        
+        if (user && user.email !== DEMO_USER_EMAIL) {
             try {
                 const storedDataKey = `financialData_${user.uid}`;
                 localStorage.setItem(storedDataKey, JSON.stringify(data));

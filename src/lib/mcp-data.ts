@@ -1,7 +1,7 @@
 export const sampleFinancialData = {
   user: {
-    name: "Jane Doe",
-    email: "jane.doe@example.com",
+    name: "John Doe",
+    email: "john.doe@example.com",
     age: 32,
   },
   accounts: [
