@@ -43,14 +43,14 @@ export const sampleFinancialData = {
   ],
   expenses: {
     monthly: [
-      { category: "Rent", amount: 25000 },
-      { category: "Groceries", amount: 15000 },
-      { category: "Utilities", amount: 5000 },
-      { category: "Shopping", amount: 10000 },
-      { category: "Entertainment", amount: 8000 },
-      { category: "Transportation", amount: 4000 },
-      { category: "EMI", amount: 22000 },
-      { category: "Other", amount: 3000 },
+      { category: "Rent", amount: 25000, dueDate: 5 },
+      { category: "Groceries", amount: 15000, dueDate: 1 },
+      { category: "Utilities", amount: 5000, dueDate: 10 },
+      { category: "Shopping", amount: 10000, dueDate: 15 },
+      { category: "Entertainment", amount: 8000, dueDate: 20 },
+      { category: "Transportation", amount: 4000, dueDate: 1 },
+      { category: "EMI", amount: 22000, dueDate: 7 },
+      { category: "Other", amount: 3000, dueDate: 1 },
     ],
   },
   insurance: {

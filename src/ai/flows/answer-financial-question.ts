@@ -29,6 +29,25 @@ export async function answerFinancialQuestion(input: AnswerFinancialQuestionInpu
   return answerFinancialQuestionFlow(input);
 }
 
+const getMarketTrendsTool = ai.defineTool({
+  name: 'getMarketTrends',
+  description: 'Gets the current market trends to provide investment advice.',
+  inputSchema: z.object({}), // No input needed
+  outputSchema: z.string().describe('A summary of current market trends.'),
+}, async () => {
+    // In a real application, this would fetch data from a financial API.
+    // For this demo, we'll return mock data.
+    return JSON.stringify({
+        sectors: {
+            positive: ["Information Technology", "Renewable Energy", "Healthcare AI"],
+            neutral: ["Real Estate", "Consumer Goods"],
+            negative: ["Legacy Automotive"],
+        },
+        advice: "Consider diversifying into technology and renewable energy. The market shows strong long-term potential in these areas. It might be a good time to review any holdings in legacy sectors."
+    });
+});
+
+
 const shouldIncludeDataTool = ai.defineTool({
   name: 'shouldIncludeData',
   description: "Determines whether to include a specific piece of financial data in the response to the user's question.",
@@ -46,16 +65,23 @@ const answerFinancialQuestionPrompt = ai.definePrompt({
   name: 'answerFinancialQuestionPrompt',
   input: {schema: AnswerFinancialQuestionInputSchema},
   output: {schema: AnswerFinancialQuestionOutputSchema},
-  tools: [shouldIncludeDataTool],
-  system: `You are a personal finance expert. Use the provided financial data to answer the user's question. 
+  tools: [shouldIncludeDataTool, getMarketTrendsTool],
+  system: `You are FinGenie, a sophisticated AI personal financial agent. Your goal is to provide helpful, personalized financial guidance based on the user's data.
 
-If the user's question requires specific data points, use the shouldIncludeData tool to determine if that data should be included.
-Only include the data points that are relevant to answering the question.
+When asked about upcoming payments:
+- Examine the \`expenses.monthly\` array. For items like 'Rent' or 'EMI', use the \`dueDate\` field (day of the month) to inform the user about their next payment.
+- Examine the \`liabilities.loans\` array to identify monthly loan (EMI) payments. Assume these are due at the start of the month unless otherwise specified.
 
-Financial Data: {{{financialData}}}
+When asked for investment advice:
+- Use the \`getMarketTrends\` tool to fetch current market conditions.
+- Analyze the user's existing \`investments\` (stocks, mutual funds).
+- Provide thoughtful, high-level investment suggestions based on their current portfolio and the market trends. For example, suggest diversification or highlight sectors they might be over- or under-exposed to.
+- **IMPORTANT**: Always include a disclaimer that you are an AI assistant and users should consult a human financial advisor before making any investment decisions.
 
-Answer the question clearly and concisely.`,
-  prompt: `Question: {{{question}}}`, // Removed unnecessary newline characters
+For all other questions, use the provided financial data to answer clearly and concisely.
+
+Financial Data: {{{financialData}}}`,
+  prompt: `Question: {{{question}}}`,
   config: {
     safetySettings: [
       {

@@ -261,14 +261,15 @@ export default function DataPage() {
                                     {financialData.expenses.monthly.map((expense, index) => (
                                         <div key={`expense-${index}`} className="p-4 border rounded-lg space-y-4 relative">
                                             <Button variant="ghost" size="icon" className="absolute top-2 right-2" onClick={() => removeArrayItem(['expenses', 'monthly', index])}><Trash2 className="h-4 w-4" /></Button>
-                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                                 <div><Label>Category</Label><Input value={expense.category} onChange={e => handleDataChange(['expenses', 'monthly', index, 'category'], e.target.value)} /></div>
                                                 <div><Label>Amount (₹)</Label><Input type="number" value={expense.amount} onChange={e => handleDataChange(['expenses', 'monthly', index, 'amount'], e.target.value, true)} /></div>
+                                                <div><Label>Due Day</Label><Input type="number" value={expense.dueDate} onChange={e => handleDataChange(['expenses', 'monthly', index, 'dueDate'], e.target.value, true)} /></div>
                                             </div>
                                         </div>
                                     ))}
                                 </div>
-                                <Button className="mt-4" variant="outline" onClick={() => addArrayItem(['expenses', 'monthly'], { category: "", amount: 0 })}><PlusCircle className="mr-2 h-4 w-4" /> Add Expense</Button>
+                                <Button className="mt-4" variant="outline" onClick={() => addArrayItem(['expenses', 'monthly'], { category: "", amount: 0, dueDate: 1 })}><PlusCircle className="mr-2 h-4 w-4" /> Add Expense</Button>
                             </div>
                         </AccordionContent>
                     </AccordionItem>
