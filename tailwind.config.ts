@@ -65,6 +65,14 @@ export default {
           border: 'hsl(var(--sidebar-border))',
           ring: 'hsl(var(--sidebar-ring))',
         },
+        stat: {
+          'net-worth': 'hsl(var(--stat-net-worth))',
+          'income': 'hsl(var(--stat-income))',
+          'expenses': 'hsl(var(--stat-expenses))',
+          'credit': 'hsl(var(--stat-credit))',
+          'growth': 'hsl(var(--stat-growth))',
+          'loss': 'hsl(var(--stat-loss))',
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',
