@@ -1,13 +1,31 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Logo } from '@/components/logo';
-import { Bot, LineChart, ShieldCheck } from 'lucide-react';
+import { Bot, LineChart, ShieldCheck, Star, Facebook, Twitter, Linkedin } from 'lucide-react';
 import Image from 'next/image';
+
+const TestimonialCard = ({ name, role, text, avatarSrc }: { name: string, role: string, text: string, avatarSrc: string }) => {
+    return (
+        <div className="bg-card p-6 rounded-lg shadow-sm border h-full flex flex-col">
+            <div className="flex items-center mb-4">
+                <Image src={avatarSrc} alt={name} width={48} height={48} className="rounded-full mr-4" data-ai-hint="person portrait" />
+                <div>
+                    <p className="font-semibold">{name}</p>
+                    <p className="text-sm text-muted-foreground">{role}</p>
+                </div>
+            </div>
+            <div className="flex mb-4">
+                {[...Array(5)].map((_, i) => <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />)}
+            </div>
+            <p className="text-muted-foreground italic flex-grow">"{text}"</p>
+        </div>
+    )
+}
 
 export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background animate-fade-in">
-      <header className="container mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <header className="container mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between sticky top-0 bg-background/80 backdrop-blur-sm z-50">
         <Logo />
         <nav className="flex items-center gap-2 sm:gap-4">
           <Button variant="ghost" asChild>
@@ -18,56 +36,64 @@ export default function LandingPage() {
           </Button>
         </nav>
       </header>
+
       <main className="flex-1">
-        <section className="container mx-auto px-4 sm:px-6 lg:px-8 text-center py-16 md:py-24">
-          <div className="animate-slide-up">
-            <h1 className="text-4xl md:text-6xl font-headline font-bold tracking-tighter mb-4">
-              Your Smart Financial AI
-            </h1>
-            <p className="max-w-2xl mx-auto text-lg md:text-xl text-muted-foreground mb-8">
-              Connect your finances, chat with our AI assistant, and get personalized insights to achieve your financial goals faster.
-            </p>
-            <div className="flex justify-center gap-4">
-              <Button size="lg" asChild>
-                <Link href="/signup">Start for Free</Link>
-              </Button>
+        {/* Hero Section */}
+        <section className="relative">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center py-24 md:py-32">
+            <div className="animate-slide-up">
+              <h1 className="text-4xl md:text-6xl font-headline font-bold tracking-tighter mb-4">
+                Your Smart Financial AI
+              </h1>
+              <p className="max-w-2xl mx-auto text-lg md:text-xl text-muted-foreground mb-8">
+                Connect your finances, chat with our AI assistant, and get personalized insights to achieve your financial goals faster.
+              </p>
+              <div className="flex justify-center gap-4">
+                <Button size="lg" asChild>
+                  <Link href="/signup">Start for Free</Link>
+                </Button>
+              </div>
             </div>
           </div>
         </section>
 
-        <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <Image 
-            src="https://placehold.co/1200x600.png"
-            alt="FinGenie Dashboard Preview"
-            width={1200}
-            height={600}
-            className="rounded-xl shadow-2xl mx-auto animate-slide-up"
-            data-ai-hint="dashboard application"
-          />
+        {/* Dashboard Preview Section */}
+        <section className="container mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+          <div className="relative rounded-xl shadow-2xl border animate-slide-up">
+             <Image 
+              src="https://placehold.co/1200x600.png"
+              alt="FinGenie Dashboard Preview"
+              width={1200}
+              height={600}
+              className="rounded-xl"
+              data-ai-hint="dashboard application"
+            />
+          </div>
         </section>
 
+        {/* Features Section */}
         <section className="bg-secondary py-20">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-headline font-bold">A Smarter Way to Manage Your Money</h2>
               <p className="max-w-2xl mx-auto text-muted-foreground mt-4">FinGenie provides the clarity and tools you need to take control of your financial future.</p>
             </div>
-            <div className="grid md:grid-cols-3 gap-12">
-              <div className="flex flex-col items-center text-center">
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="flex flex-col items-center text-center p-6 bg-card rounded-lg shadow-sm border transition-all hover:shadow-lg hover:-translate-y-1">
                 <div className="p-4 bg-primary/10 rounded-full mb-4 ring-8 ring-primary/5">
                   <Bot className="h-8 w-8 text-primary" />
                 </div>
                 <h3 className="text-xl font-headline font-semibold mb-2">AI-Powered Chat</h3>
                 <p className="text-muted-foreground">Ask any financial question in plain English and get instant, intelligent answers.</p>
               </div>
-              <div className="flex flex-col items-center text-center">
+              <div className="flex flex-col items-center text-center p-6 bg-card rounded-lg shadow-sm border transition-all hover:shadow-lg hover:-translate-y-1">
                 <div className="p-4 bg-primary/10 rounded-full mb-4 ring-8 ring-primary/5">
                   <LineChart className="h-8 w-8 text-primary" />
                 </div>
                 <h3 className="text-xl font-headline font-semibold mb-2">Insightful Dashboard</h3>
                 <p className="text-muted-foreground">Visualize your net worth, track spending, and monitor investments all in one place.</p>
               </div>
-              <div className="flex flex-col items-center text-center">
+              <div className="flex flex-col items-center text-center p-6 bg-card rounded-lg shadow-sm border transition-all hover:shadow-lg hover:-translate-y-1">
                 <div className="p-4 bg-primary/10 rounded-full mb-4 ring-8 ring-primary/5">
                   <ShieldCheck className="h-8 w-8 text-primary" />
                 </div>
@@ -77,9 +103,91 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
+
+        {/* Testimonials Section */}
+        <section className="py-20">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="text-center mb-12">
+                    <h2 className="text-3xl md:text-4xl font-headline font-bold">Loved by users worldwide</h2>
+                    <p className="max-w-2xl mx-auto text-muted-foreground mt-4">Don't just take our word for it. Here's what our users have to say.</p>
+                </div>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <TestimonialCard 
+                        name="Sarah K." 
+                        role="Freelance Designer"
+                        text="FinGenie has been a game-changer for managing my finances. The AI insights are scarily accurate and have helped me save more than I thought possible."
+                        avatarSrc="https://placehold.co/100x100.png"
+                    />
+                    <TestimonialCard 
+                        name="Michael R." 
+                        role="Tech Startup Founder"
+                        text="As a busy founder, I don't have time to track every penny. FinGenie does it for me and gives me a clear picture of my financial health in seconds."
+                        avatarSrc="https://placehold.co/100x100.png"
+                    />
+                     <TestimonialCard 
+                        name="Priya S." 
+                        role="Marketing Manager"
+                        text="I finally feel in control of my money. Setting and tracking goals is so easy, and the upcoming payment reminders have saved me from late fees twice!"
+                        avatarSrc="https://placehold.co/100x100.png"
+                    />
+                </div>
+            </div>
+        </section>
+        
+        {/* CTA Section */}
+        <section className="bg-secondary">
+             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+                 <h2 className="text-3xl md:text-4xl font-headline font-bold mb-4">Ready to unlock your financial potential?</h2>
+                 <p className="text-muted-foreground mb-8 max-w-xl mx-auto">Join thousands of users who are building a better financial future with FinGenie.</p>
+                 <Button size="lg" asChild>
+                    <Link href="/signup">Get Started for Free</Link>
+                </Button>
+            </div>
+        </section>
+
       </main>
-      <footer className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-muted-foreground text-sm">
-        <p>&copy; {new Date().getFullYear()} FinGenie. All rights reserved.</p>
+      
+      {/* Footer */}
+      <footer className="bg-background border-t">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div className="col-span-2 md:col-span-1">
+                    <Logo />
+                    <p className="text-muted-foreground mt-4 text-sm">Your Smart Financial AI</p>
+                </div>
+                 <div>
+                    <h4 className="font-semibold mb-4">Product</h4>
+                    <ul className="space-y-2 text-sm">
+                        <li><Link href="#" className="text-muted-foreground hover:text-foreground">Features</Link></li>
+                        <li><Link href="#" className="text-muted-foreground hover:text-foreground">Security</Link></li>
+                        <li><Link href="#" className="text-muted-foreground hover:text-foreground">Pricing</Link></li>
+                    </ul>
+                </div>
+                 <div>
+                    <h4 className="font-semibold mb-4">Company</h4>
+                    <ul className="space-y-2 text-sm">
+                        <li><Link href="#" className="text-muted-foreground hover:text-foreground">About Us</Link></li>
+                        <li><Link href="#" className="text-muted-foreground hover:text-foreground">Careers</Link></li>
+                        <li><Link href="#" className="text-muted-foreground hover:text-foreground">Contact</Link></li>
+                    </ul>
+                </div>
+                 <div>
+                    <h4 className="font-semibold mb-4">Legal</h4>
+                    <ul className="space-y-2 text-sm">
+                        <li><Link href="#" className="text-muted-foreground hover:text-foreground">Privacy Policy</Link></li>
+                        <li><Link href="#" className="text-muted-foreground hover:text-foreground">Terms of Service</Link></li>
+                    </ul>
+                </div>
+            </div>
+            <div className="mt-8 border-t pt-6 flex flex-col sm:flex-row justify-between items-center">
+                <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} FinGenie. All rights reserved.</p>
+                <div className="flex gap-4 mt-4 sm:mt-0">
+                    <Link href="#" className="text-muted-foreground hover:text-foreground"><Twitter className="h-5 w-5"/></Link>
+                    <Link href="#" className="text-muted-foreground hover:text-foreground"><Facebook className="h-5 w-5"/></Link>
+                    <Link href="#" className="text-muted-foreground hover:text-foreground"><Linkedin className="h-5 w-5"/></Link>
+                </div>
+            </div>
+        </div>
       </footer>
     </div>
   );
