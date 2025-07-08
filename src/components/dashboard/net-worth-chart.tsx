@@ -51,7 +51,12 @@ export default function NetWorthChart({ data }: NetWorthChartProps) {
                         <Tooltip
                             content={<ChartTooltipContent
                               formatter={(value) => `₹${Number(value).toLocaleString()}`}
-                              labelFormatter={(label) => format(new Date(label), "MMM d, yyyy")}
+                              labelFormatter={(label) => {
+                                if (label instanceof Date) {
+                                  return format(label, "MMM d, yyyy");
+                                }
+                                return null;
+                              }}
                             />}
                         />
                         <Area type="monotone" dataKey="value" stroke="hsl(var(--primary))" fill="url(#colorValue)" />
