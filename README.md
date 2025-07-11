@@ -2,14 +2,14 @@
 
 FinGenie is an intelligent personal finance dashboard designed to give users a complete, AI-powered overview of their financial life. It connects real-time structured financial data from 18+ trusted sources and delivers smart, contextual financial insights powered by Google’s Gemini via Genkit.
 
-With FinGenie, you can chat with your finances, simulate your future, track your goals, and take control of your wealth — all in a secure, interactive, and personalized interface.
+With FinGenie, you can chat with your finances, simulate your future, track your goals, and take control of your wealth, all in a secure, interactive, and personalized interface.
 
 
 ## 💡Why FinGenie?
 
-Traditional finance apps offer generic tools that don’t understand your unique situation. FinGenie solves this by securely integrating with Fi Money’s Model Context Protocol (MCP), which aggregates your real financial data — assets, liabilities, credit score, EPF, SIPs — and feeds it into an intelligent Gemini-powered AI engine.
+Traditional finance apps offer generic tools that don’t understand your unique situation. FinGenie solves this by securely integrating with Fi Money’s Model Context Protocol (MCP), which aggregates your real financial data, assets, liabilities, credit score, EPF, SIPs and feeds it into an intelligent Gemini-powered AI engine.
 
-Now your financial assistant knows you — and helps you like a pro.
+Now your financial assistant knows you and helps you like a pro.
 
 
 ## ✅ Key Features
